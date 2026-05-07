@@ -5,7 +5,7 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 const apiVersion = '2023-05-03'
 const useCdn = false
 
-// Add this export to fix the "Attempted import error" in your logs
+// This export clears the "Attempted import error" in your build logs
 export const getSanityImageConfig = () => ({ projectId, dataset })
 
 import {
@@ -31,7 +31,8 @@ export async function getAllPosts(): Promise<Post[]> {
 
 export async function getAllPostsSlugs(): Promise<any[]> {
   const slugs = await getClient().fetch<string[]>(postSlugsQuery)
-  // We split the slug string into an array so Next.js [...slug] can read it
+  // This converts 'fb/reel/123' into an array ['fb', 'reel', '123'] 
+  // so the catch-all route [...slug].tsx can process it correctly
   return slugs.map((slug) => ({ 
     slug: slug.split('/').filter(Boolean) 
   }))
@@ -41,10 +42,12 @@ export async function getPostAndMoreStories(
   slug: string | string[],
   token?: string | null
 ): Promise<{ post: Post; morePosts: Post[] }> {
-  // Join the array back into a string if it's a catch-all path
+  // Re-join the array into a single string path for the database query
   const slugString = Array.isArray(slug) ? slug.join('/') : slug
+  
+  // CRITICAL FIX: The key MUST be 'postId' to match your GROQ query
   return await getClient(token ? { token } : undefined).fetch(
     postAndMoreStoriesQuery,
-    { slug: slugString }
+    { postId: slugString } 
   )
 }
