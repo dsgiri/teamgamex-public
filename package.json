@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "dev": "npm --prefix web-teamgamex run dev",
+    "web:dev": "npm --prefix web-teamgamex run dev",
+    "studio:dev": "npm --prefix teamgamex-studio run dev"
+  },
   "dependencies": {
     "@sanity/client": "^7.22.0"
   }
