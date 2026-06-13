@@ -6,3 +6,6 @@
   NEXT_PUBLIC_SANITY_DATASET="Your Sanity Dataset"
   SANITY_API_WRITE_TOKEN="Your Sanity API Write Token"
   SANITY_API_READ_TOKEN="Your Sanity API Read Token"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"
