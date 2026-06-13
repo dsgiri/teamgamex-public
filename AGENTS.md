@@ -48,3 +48,10 @@ Welcome, Agent! This document defines the development rules, style guides, workf
   * `Fix: solve Clerk redirect loop on page loads`
   * `Docs: update AGENTS.md instruction files`
 * **Lockfiles:** Do not run arbitrary updates. Lock dependency installations to exact versions specified in `package.json` to prevent peer dependency conflicts.
+
+---
+
+## 📋 6. Planning & Execution Rules
+1. **Mandatory Planning**: Before executing any modifications to code or running commands that alter the codebase, you MUST create or update the `implementation_plan.md` and `task.md` artifacts.
+2. **Seek Explicit Approval**: Do not execute or commit changes for **deleting any files/folders** or making **major page layout changes** without first sharing the plan and receiving the user's explicit approval.
+
