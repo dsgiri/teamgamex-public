@@ -1,62 +1,75 @@
-import { Post } from 'lib/sanity.queries'
+// components/HeroPost.tsx
 import VideoPlayer from './VideoPlayer'
 
-export default function HeroPost(props: Post) {
-  const { 
-    title = 'Trending Activity', 
-    description = '',
-    videoUrl = '', 
-    postSource = '', 
-    playerBenefit = '', 
-    shopLink = '#', 
-    category = '' 
-  } = props
+interface HeroPostProps {
+  title: string
+  excerpt: string
+  videoUrl?: string
+  originalUrl?: string 
+  gearUrl?: string     
+  onSave: () => void     // Logic passed from the main page
+  isLoading: boolean     // Loading state from the main page
+}
+
+export default function HeroPost({
+  title,
+  videoUrl,
+  excerpt,
+  originalUrl,
+  gearUrl,
+  onSave,
+  isLoading
+}: HeroPostProps) {
+  
+  const handleOpenLink = (url?: string) => {
+    const target = url || videoUrl;
+    if (target) window.open(target, '_blank', 'noopener,noreferrer')
+    else alert("Link coming soon!")
+  }
 
   return (
-    <section className="mt-8 mb-16 px-4 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        
-        {/* Left: Universal Video Player */}
-        <div className="relative w-full aspect-[9/16] max-h-[650px] rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-slate-200">
-          <VideoPlayer videoUrl={videoUrl} />
+    <section className="flex flex-col lg:flex-row gap-10 items-center bg-white p-8 rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+      <div className="w-full lg:w-1/2">
+        <VideoPlayer url={videoUrl || ""} title={title} />
+      </div>
+      
+      <div className="w-full lg:w-1/2 space-y-6">
+        <div>
+          <span className="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
+            Top Pick
+          </span>
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-4 leading-tight tracking-tighter">
+            {title}
+          </h2>
         </div>
-
-        {/* Right: Content */}
-        <div className="flex flex-col">
-          <div className="mb-6">
-            <span className="inline-block bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4">
-              {category || 'Team Building'}
-            </span>
-            <h3 className="text-3xl lg:text-5xl font-black leading-tight mb-2 text-slate-900 break-words">
-              {title}
-            </h3>
-            
-            {description && (
-              <p className="text-slate-600 text-lg mb-4 font-medium leading-relaxed">
-                {description}
-              </p>
-            )}
-
-            <p className="text-slate-500 font-bold uppercase text-[10px] tracking-widest">
-              Platform: <span className="text-blue-500">{postSource || 'Checking...'}</span>
-            </p>
-          </div>
-
-          <div className="mb-10 relative">
-            <div className="absolute -left-4 top-0 bottom-0 w-1 bg-blue-600 rounded-full"></div>
-            <p className="text-xl leading-relaxed text-slate-700 font-medium pl-6 italic">
-              "{playerBenefit || 'Discover why this is a great addition to your team workflow.'}"
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <a href={videoUrl || '#'} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-blue-600 transition-all shadow-lg">
-              Watch Original
-            </a>
-            <a href={shopLink || '#'} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-bold hover:bg-slate-100 transition-all shadow-lg">
-              Get the Gear
-            </a>
-          </div>
+        <p className="text-lg text-slate-600 font-medium leading-relaxed italic border-l-4 border-blue-100 pl-4">
+          "{excerpt || "Discover why this is a great addition to your team workflow."}"
+        </p>
+        
+        <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-50">
+          <button 
+            onClick={() => handleOpenLink(originalUrl)}
+            className="flex-1 bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-xs hover:bg-black transition-all active:scale-95 shadow-lg whitespace-nowrap"
+          >
+            Watch Original
+          </button>
+          <button 
+            onClick={() => handleOpenLink(gearUrl || "https://amazon.com")}
+            className="flex-1 bg-white border border-slate-200 text-slate-900 px-6 py-3 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all active:scale-95 shadow-sm whitespace-nowrap"
+          >
+            Get the Gear
+          </button>
+          <button 
+            onClick={onSave}
+            disabled={isLoading}
+            className={`w-full py-4 rounded-xl font-black text-[10px] tracking-widest uppercase transition-all shadow-sm ${
+              isLoading 
+                ? 'bg-slate-100 text-slate-400 cursor-not-allowed' 
+                : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-95'
+            }`}
+          >
+            {isLoading ? 'SAVING...' : '+ ADD TO MY GAME FEED'}
+          </button>
         </div>
       </div>
     </section>

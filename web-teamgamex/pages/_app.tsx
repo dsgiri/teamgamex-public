@@ -1,32 +1,16 @@
-import '../tailwind.css'
+// web-teamgamex/pages/_app.tsx
+import { ClerkProvider } from '@clerk/nextjs'
+import type { AppProps } from 'next/app'
+import './globals.css' // Direct local import for maximum stability
 
-import { VisualEditing } from '@sanity/visual-editing/next-pages-router'
-import { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
-
-export interface SharedPageProps {
-  previewMode: boolean
-  previewPerspective: string | null
-  token: string
-}
-
-const PreviewProvider = dynamic(() => import('components/PreviewProvider'))
-
-export default function App({
-  Component,
-  pageProps,
-}: AppProps<SharedPageProps>) {
-  const { previewMode, previewPerspective, token } = pageProps
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      {previewMode ? (
-        <PreviewProvider perspective={previewPerspective} token={token}>
-          <Component {...pageProps} />
-        </PreviewProvider>
-      ) : (
+    <ClerkProvider {...pageProps}>
+      <div className="antialiased">
         <Component {...pageProps} />
-      )}
-      {previewMode && <VisualEditing />}
-    </>
+      </div>
+    </ClerkProvider>
   )
 }
+
+export default MyApp

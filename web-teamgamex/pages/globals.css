@@ -1,0 +1,22 @@
+/* web-teamgamex/pages/globals.css */
+@import "tailwindcss";
+
+/* Custom Theme Overrides 
+  This ensures the B2B dashboard has a clean, professional baseline.
+*/
+@layer base {
+  html, body {
+    padding: 0;
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #ffffff;
+    color: #0f172a; /* slate-900 */
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* Add any custom utility hacks here if needed for the Event Calendar */

@@ -1,47 +1,60 @@
+// components/VideoPlayer.tsx
+import React from 'react'
+
 interface VideoPlayerProps {
-  videoUrl: string;
+  url: string
+  title: string
 }
 
-export default function VideoPlayer({ videoUrl }: VideoPlayerProps) {
-  if (!videoUrl || videoUrl.length < 5) return null;
+export default function VideoPlayer({ url, title }: VideoPlayerProps) {
+  // Logic to parse the video ID and provider
+  const getEmbedUrl = (url: string) => {
+    if (!url) return ''
 
-  // 1. Logic for YouTube Shorts
-  if (videoUrl.includes('youtube.com/shorts/')) {
-    const videoId = videoUrl.split('/shorts/')[1]?.split('?')[0];
-    return (
-      <iframe
-        width="100%"
-        height="100%"
-        src={`https://www.youtube.com/embed/${videoId}`}
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-        className="absolute inset-0"
-      ></iframe>
-    );
+    // YouTube Shorts & Standard
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      const id = url.includes('shorts/') 
+        ? url.split('shorts/')[1]?.split('?')[0] 
+        : url.split('v=')[1]?.split('&')[0] || url.split('/').pop()
+      return `https://www.youtube.com/embed/${id}?modestbranding=1&rel=0`
+    }
+
+    // Facebook Reels & Video
+    if (url.includes('facebook.com')) {
+      return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=0`
+    }
+
+    // TikTok
+    if (url.includes('tiktok.com')) {
+      const id = url.split('/video/')[1]?.split('?')[0]
+      return `https://www.tiktok.com/embed/v2/${id}`
+    }
+
+    return url // Fallback
   }
 
-  // 2. Logic for Facebook Reels
-  if (videoUrl.includes('facebook.com')) {
-    return (
-      <iframe
-        src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(videoUrl)}&show_text=0&width=337`}
-        width="100%"
-        height="100%"
-        style={{ border: 'none', overflow: 'hidden' }}
-        scrolling="no"
-        frameBorder="0"
-        allowFullScreen={true}
-        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        className="absolute inset-0"
-      ></iframe>
-    );
-  }
+  const embedUrl = getEmbedUrl(url)
 
   return (
-    <div className="flex items-center justify-center h-full text-slate-500 text-xs italic p-4 text-center">
-      Unsupported video platform
+    <div className="relative w-full h-full bg-slate-900 flex items-center justify-center">
+      {embedUrl ? (
+        <iframe
+          src={embedUrl}
+          title={title}
+          className="w-full h-full absolute inset-0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          loading="lazy"
+        />
+      ) : (
+        <div className="flex flex-col items-center gap-3 text-slate-500">
+          <span className="text-4xl">🎬</span>
+          <p className="text-[10px] font-black uppercase tracking-widest">Video Preview</p>
+        </div>
+      )}
+      
+      {/* Subtle Overlay to maintain the "App" feel and prevent accidental clicks into the platform */}
+      <div className="absolute inset-0 pointer-events-none border-[12px] border-transparent group-hover:border-white/5 transition-all duration-500" />
     </div>
-  );
+  )
 }

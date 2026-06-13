@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build outputs
+.next/
+out/
+
+# Production builds
+build/
+dist/
+
+# Env local files (secrets)
+.env
+.env.local
+.env*.local
+*.env
+
+# IDE / OS junk
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# Sanity specific ignores
+.sanity/
+/static/
+
+# Vercel
+.vercel

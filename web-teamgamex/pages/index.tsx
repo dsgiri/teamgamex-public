@@ -1,107 +1,127 @@
-import { GetStaticProps } from 'next'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Link from 'next/link' // Added for direct navigation
 import Container from 'components/BlogContainer'
-import HeroPost from 'components/HeroPost'
-import IndexPageHead from 'components/IndexPageHead'
 import Layout from 'components/BlogLayout'
-import VideoPlayer from 'components/VideoPlayer' // ADDED: Importing the player
-import { getAllPosts, getSettings } from 'lib/sanity.client'
-import { Post, Settings } from 'lib/sanity.queries'
+import ActivityStrip from 'components/home/ActivityStrip'
+import { getAllPosts } from 'lib/sanity.client'
 
-export interface IndexPageProps {
-  posts: Post[]
-  settings: Settings
-  preview: boolean
-  token: string | null
-}
+export default function IndexPage({ posts = [] }) {
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState('')
 
-export default function IndexPage(props: IndexPageProps) {
-  const { posts, settings, preview } = props
-  const [heroPost, ...morePosts] = posts || []
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/browse-games?q=${encodeURIComponent(searchQuery)}`)
+    }
+  }
+
+  const handleVibeClick = (vibe: string) => {
+    router.push(`/browse-games?category=${encodeURIComponent(vibe)}`)
+  }
+
+  const vibes = [
+    { name: 'Move It!', emoji: '💃' },
+    { name: 'Brain Power', emoji: '🧠' },
+    { name: 'Sing Along', emoji: '🎤' },
+    { name: 'Get Crafty', emoji: '🎨' },
+    { name: 'Seated Fun', emoji: '🪑' }
+  ]
 
   return (
-    <Layout preview={preview}>
-      <IndexPageHead settings={settings} />
+    <Layout>
+      <Head>
+        <title>TeamGameX | Industrial Resident Engagement</title>
+      </Head>
+
       <Container>
-        <header className="flex flex-col items-center mt-16 mb-16 md:mb-12">
-          <h1 className="text-6xl md:text-7xl font-bold tracking-tighter leading-tight text-slate-900">
-            TeamGameX.
-          </h1>
-          <p className="text-center text-lg mt-5 text-slate-600 font-medium">
-            Professional team-building games and executive resources.
-          </p>
+        {/* HERO SECTION */}
+        <header className="pt-32 pb-12 flex flex-col items-center gap-10">
+          <div className="text-center space-y-4">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 leading-[1.1]">
+              Happiness First.
+            </h1>
+            <p className="text-lg text-slate-500 font-medium max-w-2xl mx-auto px-4">
+              The professional standard for <span className="text-blue-600 font-bold">cognitive stimulation</span> and connection in senior care.
+            </p>
+            
+            {/* Primary CTA for New Users */}
+            <div className="pt-4">
+              <Link 
+                href="/join" 
+                className="inline-block bg-blue-600 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-xl shadow-blue-200"
+              >
+                Start Your Free Trial —
+              </Link>
+            </div>
+          </div>
+
+          {/* Master Search Bar */}
+          <form onSubmit={handleSearch} className="w-full max-w-3xl relative group">
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search the library (e.g. Trivia, Chair Yoga)" 
+              className="w-full h-20 bg-slate-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-[2.5rem] px-10 text-xl font-medium transition-all outline-none shadow-sm"
+            />
+            <button type="submit" className="absolute right-4 top-4 bottom-4 bg-slate-900 text-white px-8 rounded-[1.8rem] font-bold text-sm hover:bg-black transition-colors">
+              Search
+            </button>
+          </form>
+
+          {/* VIBE NAVIGATION */}
+          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-4 w-full justify-center">
+            {vibes.map(vibe => (
+              <button 
+                key={vibe.name}
+                onClick={() => handleVibeClick(vibe.name)}
+                className="flex items-center gap-2 bg-white border border-slate-100 px-6 py-3 rounded-2xl font-bold text-sm text-slate-600 hover:border-blue-300 hover:text-blue-600 transition-all shadow-sm active:scale-95 whitespace-nowrap"
+              >
+                <span>{vibe.emoji}</span> {vibe.name}
+              </button>
+            ))}
+          </div>
         </header>
 
-        {/* The Featured Hero Video */}
-        {heroPost && <HeroPost {...heroPost} />}
+        {/* CONTENT FEED */}
+        <main className="space-y-4 pb-20">
+          <ActivityStrip 
+            title="Trending Joy" 
+            activities={posts.slice(0, 8)} 
+            onSave={() => {}} 
+            onAddToEvent={() => {}} 
+          />
+        </main>
 
-        {/* The Full Library Grid */}
-        {morePosts.length > 0 && (
-          <section className="pb-24">
-            <h2 className="mb-8 text-3xl md:text-4xl font-bold tracking-tighter leading-tight text-slate-900 border-b-4 border-blue-600 inline-block">
-              More Activities
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 md:gap-y-16">
-              {morePosts.map((post) => (
-                <div key={post._id} className="group">
-                  {/* Grid Video Player Container */}
-                  <div className="relative aspect-[9/16] bg-black rounded-2xl overflow-hidden mb-4 shadow-lg ring-1 ring-slate-200">
-                     <VideoPlayer videoUrl={post.videoUrl || ''} />
-                  </div>
-
-                  <h3 className="text-xl font-bold leading-snug mb-2 group-hover:text-blue-600 transition-colors line-clamp-1">
-                    {post.title}
-                  </h3>
-                  
-                  <div className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-2">
-                    {post.category || 'Team Building'}
-                  </div>
-
-                  <p className="text-sm text-slate-600 line-clamp-2 italic mb-6">
-                    "{post.playerBenefit || 'Check out this team activity.'}"
-                  </p>
-
-                  <div className="flex gap-3">
-                    <a 
-                      href={post.videoUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-[10px] font-bold bg-slate-100 px-3 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
-                    >
-                      Watch Original
-                    </a>
-                    <a 
-                      href={post.shopLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-[10px] font-bold border border-slate-200 px-3 py-2 rounded-lg hover:bg-slate-900 hover:text-white transition-all"
-                    >
-                      Get Gear
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* B2B CONFIDENCE SECTION */}
+        <section className="mt-20 mb-20 p-12 bg-slate-900 text-white rounded-[4rem] shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px]" />
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center text-center md:text-left">
+             <div className="space-y-2">
+                <p className="text-6xl font-black tracking-tighter">85%</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Avg. Resident Participation</p>
+             </div>
+             <div className="space-y-2">
+                <p className="text-3xl font-black leading-tight">
+                  Documentation <br />
+                  <span className="text-blue-400 italic font-serif">Done in Seconds.</span>
+                </p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Automatic MDS Section F Log Generation</p>
+             </div>
+          </div>
+        </section>
       </Container>
     </Layout>
   )
 }
 
-export const getStaticProps: GetStaticProps<IndexPageProps> = async (ctx) => {
-  const { preview = false, previewData = {} } = ctx
-
-  const [settings, posts] = await Promise.all([
-    getSettings(),
-    getAllPosts(),
-  ])
-
+export async function getStaticProps() {
+  const posts = await getAllPosts()
   return {
-    props: {
-      posts: posts || [],
-      settings: settings || {},
-      preview,
-      token: (previewData as any)?.token ?? null,
-    },
+    props: { posts: posts || [] },
+    revalidate: 60
   }
 }
