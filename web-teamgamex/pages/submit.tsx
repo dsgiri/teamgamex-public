@@ -107,79 +107,80 @@ export default function SubmitGamePage() {
         <title>Submit a Game | TeamGameX</title>
       </Head>
 
-      <div className="bg-slate-900 text-white min-h-screen font-sans pb-24">
+      <div className="bg-[#faf6f0] text-slate-800 min-h-screen font-sans pb-24">
         {/* Navigation Bar */}
-        <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-slate-800 mb-12">
-          <Link href="/" className="text-2xl font-black tracking-tight text-white flex items-center gap-1">
-            Team<span className="text-blue-500">Game</span>X.
+        <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b-2 border-[#f0e8dc] mb-12">
+          <Link href="/" className="text-3xl font-black tracking-tight text-indigo-950 flex items-center gap-2 hover:scale-105 transition-transform">
+            <span className="bg-gradient-to-tr from-amber-400 to-rose-450 text-white w-10 h-10 rounded-2xl flex items-center justify-center shadow-md shadow-amber-500/30">🎯</span>
+            TeamGameX
           </Link>
-          <div className="flex items-center gap-8 text-sm font-bold text-slate-300">
-            <Link href="/" className="hover:text-white transition-colors">Directory</Link>
-            <Link href="/disclaimer" className="hover:text-white transition-colors">About</Link>
-            <Link href="/submit" className="hover:text-white transition-colors">Submit a game</Link>
+          <div className="flex items-center gap-8 text-sm font-bold text-slate-600">
+            <Link href="/" className="hover:text-indigo-650 transition-colors">🎈 Game Directory</Link>
+            <Link href="/disclaimer" className="hover:text-indigo-650 transition-colors">💬 About Us</Link>
+            <Link href="/submit" className="hover:text-indigo-650 transition-colors">➕ Submit a Game</Link>
           </div>
         </nav>
 
         <main className="max-w-3xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-slate-500 hover:text-indigo-650 mb-8 transition-colors">
             <span>←</span> Back to directory
           </Link>
 
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-3">
-            Submit a game video
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-3">
+            Submit a game video 🎬
           </h1>
-          <p className="text-slate-400 font-medium mb-8">
-            Paste any social media short and we'll add it to the directory. All submissions are reviewed before going live.
+          <p className="text-slate-500 font-medium mb-8">
+            Help our directory grow! Paste a social media video link from YouTube, TikTok, or Instagram. We will review and publish it.
           </p>
 
           {success ? (
-            <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-3xl p-8 text-center space-y-4">
+            <div className="bg-emerald-100 border-2 border-emerald-200 text-emerald-800 rounded-[2rem] p-8 text-center space-y-4 shadow-sm">
               <span className="text-4xl">🎉</span>
-              <h3 className="text-xl font-bold">Submission Received!</h3>
-              <p className="text-sm font-medium">Thank you for helping our community grow. Redirecting you to the homepage...</p>
+              <h3 className="text-xl font-black">Submission Received!</h3>
+              <p className="text-sm font-bold">Thank you for sharing with our community. Redirecting you to the homepage...</p>
             </div>
           ) : (
-            <div className="bg-slate-950/40 border border-slate-800 rounded-3xl p-8 space-y-6">
+            <div className="bg-white border-2 border-[#e6dec8] rounded-[2rem] p-8 space-y-6 shadow-sm">
               {/* URL Field */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Video URL (YouTube, TikTok, Instagram, LinkedIn, Facebook)</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Social Video URL</label>
                 <input
                   type="url"
                   placeholder="https://www.youtube.com/shorts/..."
                   value={videoUrl}
                   onChange={(e) => handleUrlChange(e.target.value)}
-                  className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
+                  className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
                 />
                 {detectedPlatform && (
-                  <p className="text-emerald-400 text-xs font-bold">
-                    ✓ {detectedPlatform} short detected — preview ready
+                  <p className="text-emerald-600 text-xs font-bold">
+                    ✓ {detectedPlatform} video source detected!
                   </p>
                 )}
               </div>
 
               {/* Game Name */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Game Name</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Game Name</label>
                 <input
                   type="text"
-                  placeholder="e.g. Human Bowling — Care Home Edition"
+                  placeholder="e.g. Balloon Volleyball Relays"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
+                  className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
                 />
               </div>
 
               {/* Platform Badges */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Platform Detected</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">Platform Detected</label>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {['youtube', 'tiktok', 'instagram', 'linkedin', 'facebook'].map((plat) => (
                     <span
                       key={plat}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold capitalize border ${
+                      className={`px-4 py-2 rounded-xl text-xs font-black capitalize border-2 ${
                         detectedPlatform === plat
-                          ? 'bg-blue-600 border-blue-500 text-white'
-                          : 'bg-slate-900 border-slate-800 text-slate-400'
+                          ? 'bg-indigo-650 border-indigo-500 text-white shadow-sm'
+                          : 'bg-[#fafaf8] border-[#e6dec8] text-slate-400'
                       }`}
                     >
                       {plat}
@@ -191,11 +192,11 @@ export default function SubmitGamePage() {
               {/* Double Column Dropdowns */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Game Category</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Game Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors capitalize"
+                    className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors capitalize"
                   >
                     {['movement', 'memory', 'trivia', 'music', 'creative', 'social'].map((cat) => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -203,11 +204,11 @@ export default function SubmitGamePage() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Mobility Level</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Mobility Level</label>
                   <select
                     value={mobility}
                     onChange={(e) => setMobility(e.target.value)}
-                    className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors capitalize"
+                    className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors capitalize"
                   >
                     <option value="all">All levels</option>
                     <option value="seated">Seated/wheelchair ok</option>
@@ -219,55 +220,55 @@ export default function SubmitGamePage() {
               {/* Player numbers and duration */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Players (Min)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Players (Min)</label>
                   <input
                     type="number"
                     value={playersMin}
                     onChange={(e) => setPlayersMin(Number(e.target.value))}
-                    className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
+                    className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Players (Max)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Players (Max)</label>
                   <input
                     type="number"
                     value={playersMax}
                     onChange={(e) => setPlayersMax(Number(e.target.value))}
-                    className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
+                    className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Duration (Minutes)</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Duration (Minutes)</label>
                   <input
                     type="number"
                     value={duration}
                     onChange={(e) => setDuration(Number(e.target.value))}
-                    className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
+                    className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-bold outline-none transition-colors"
                   />
                 </div>
               </div>
 
               {/* Amazon Affiliate Link */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Amazon Gear Link (Optional — Affiliate)</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Amazon Gear Link (Optional)</label>
                 <input
                   type="url"
                   placeholder="https://amazon.com/dp/..."
                   value={gearUrl}
                   onChange={(e) => setGearUrl(e.target.value)}
-                  className="w-full h-14 bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
+                  className="w-full h-14 bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl px-4 text-sm font-medium outline-none transition-colors"
                 />
               </div>
 
               {/* Description */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Short Description</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">How to play & Rules</label>
                 <textarea
-                  placeholder="Residents form two teams and roll lightweight foam balls down..."
+                  placeholder="Explain how to set up the game and run it..."
                   rows={4}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-slate-900 border-2 border-slate-800 focus:border-blue-500 rounded-xl p-4 text-sm font-medium outline-none transition-colors resize-none"
+                  className="w-full bg-[#fafaf8] border-2 border-[#e6dec8] focus:border-indigo-500 rounded-xl p-4 text-sm font-medium outline-none transition-colors resize-none"
                 />
               </div>
 
@@ -277,17 +278,17 @@ export default function SubmitGamePage() {
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => handleSubmit('pending')}
-                  className="bg-blue-650 hover:bg-blue-600 disabled:bg-blue-800 text-white font-bold px-8 py-4 rounded-xl transition-colors text-sm"
+                  className="bg-indigo-650 hover:bg-indigo-600 disabled:bg-indigo-800 text-white font-black px-8 py-4 rounded-2xl transition-colors text-sm shadow-md active:scale-95"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit for review'}
+                  {isSubmitting ? 'Submitting...' : 'Submit Game for Review'}
                 </button>
                 <button
                   type="button"
                   disabled={isSubmitting}
                   onClick={() => handleSubmit('draft')}
-                  className="bg-slate-800 hover:bg-slate-700 disabled:bg-slate-900 text-slate-300 font-bold px-8 py-4 rounded-xl transition-colors text-sm border border-slate-700"
+                  className="bg-white hover:bg-slate-50 disabled:bg-slate-100 text-slate-700 font-black px-8 py-4 rounded-2xl transition-colors text-sm border-2 border-[#e6dec8] active:scale-95"
                 >
-                  Save draft
+                  Save as Draft
                 </button>
               </div>
             </div>

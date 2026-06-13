@@ -75,15 +75,15 @@ export default function AdminDashboard() {
   return (
     <Layout>
       <Head>
-        <title>Admin Dashboard | TeamGameX</title>
+        <title>Admin Panel | TeamGameX</title>
       </Head>
 
-      <div className="bg-slate-950 text-white min-h-screen font-sans flex flex-col md:flex-row">
+      <div className="bg-[#faf6f0] text-slate-850 min-h-screen font-sans flex flex-col md:flex-row">
         {/* Left Sidebar */}
-        <aside className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0">
-          <div className="p-8 border-b border-slate-800">
-            <Link href="/" className="text-2xl font-black tracking-tight text-white flex items-center gap-1">
-              Team<span className="text-blue-500">Game</span>X.
+        <aside className="w-full md:w-64 bg-slate-900 border-r-2 border-slate-800 flex flex-col shrink-0 text-white">
+          <div className="p-8 border-b-2 border-slate-800">
+            <Link href="/" className="text-3xl font-black tracking-tight text-white flex items-center gap-1 hover:scale-105 transition-transform">
+              🎯 TeamGameX
             </Link>
           </div>
           <nav className="flex-1 p-6 space-y-2">
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
                 key={item.name}
                 className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-colors ${
                   item.active
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-indigo-600 text-white'
                     : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
@@ -115,43 +115,45 @@ export default function AdminDashboard() {
           {/* Header */}
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-black tracking-tight">Dashboard</h1>
-              <p className="text-slate-400 text-sm font-medium">Manage submissions, view metrics, and edit directories.</p>
+              <h1 className="text-3xl font-black tracking-tight text-slate-900">Admin Control Center 🎛️</h1>
+              <p className="text-slate-500 text-sm font-medium">Verify submissions and moderate public game listings.</p>
             </div>
             <Link
               href="/submit"
-              className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-black uppercase tracking-widest px-6 py-3.5 rounded-xl transition-colors shrink-0 text-center"
+              className="bg-indigo-650 hover:bg-indigo-600 text-white text-xs font-black uppercase tracking-widest px-6 py-3.5 rounded-xl transition-colors shrink-0 text-center shadow-md active:scale-95"
             >
-              + Add video
+              + Add video manual
             </Link>
           </header>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'Total videos', value: totalCount, subtitle: '+3 this week', color: 'text-emerald-400' },
-              { title: 'Pending review', value: pendingCount, subtitle: 'Needs action', color: 'text-amber-400' },
-              { title: 'Plays this month', value: '1,204', subtitle: '+18% vs last month', color: 'text-emerald-400' },
-              { title: 'Gear clicks', value: '87', subtitle: 'Amazon affiliate', color: 'text-blue-400' },
+              { title: 'Total live videos', value: totalCount, subtitle: 'Live in directory', color: 'text-emerald-600 bg-emerald-55/80 border-emerald-100' },
+              { title: 'Pending review', value: pendingCount, subtitle: 'Needs verification', color: 'text-amber-600 bg-amber-55/80 border-amber-100' },
+              { title: 'Plays this month', value: '1,204', subtitle: '+18% vs last month', color: 'text-blue-600 bg-blue-55/80 border-blue-100' },
+              { title: 'Gear clicks', value: '87', subtitle: 'Amazon Associates', color: 'text-rose-600 bg-rose-55/80 border-rose-100' },
             ].map((stat) => (
-              <div key={stat.title} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">{stat.title}</span>
+              <div key={stat.title} className={`bg-white border-2 rounded-3xl p-6 space-y-2 shadow-sm ${stat.color.split(' ')[2]}`}>
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">{stat.title}</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-white">{stat.value}</span>
+                  <span className="text-3xl font-black text-slate-900">{stat.value}</span>
                 </div>
-                <span className={`text-[10px] font-bold ${stat.color} block`}>{stat.subtitle}</span>
+                <span className={`text-[10px] font-bold ${stat.color.split(' ')[0]} ${stat.color.split(' ')[1]} px-2 py-0.5 rounded-lg inline-block`}>
+                  {stat.subtitle}
+                </span>
               </div>
             ))}
           </div>
 
           {/* Recent Submissions */}
           <div className="space-y-6">
-            <h2 className="text-lg font-black tracking-tight">Recent submissions</h2>
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden">
+            <h2 className="text-xl font-black tracking-tight text-indigo-950">Recent Crowdsourced Submissions</h2>
+            <div className="bg-white border-2 border-[#e6dec8] rounded-3xl overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-800 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <tr className="border-b border-[#e6dec8] bg-[#fafaf8] text-[10px] font-black uppercase tracking-widest text-slate-400">
                       <th className="p-6">Game name</th>
                       <th className="p-6">Platform</th>
                       <th className="p-6">Category</th>
@@ -159,52 +161,52 @@ export default function AdminDashboard() {
                       <th className="p-6 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800 text-sm font-medium text-slate-300">
+                  <tbody className="divide-y divide-[#e6dec8] text-sm font-medium text-slate-700">
                     {/* Default Mock Submissions */}
-                    <tr className="hover:bg-slate-950/20">
-                      <td className="p-6 font-bold text-white">Human bowling — care home</td>
+                    <tr className="hover:bg-slate-50/50">
+                      <td className="p-6 font-bold text-slate-900">Human bowling — care home</td>
                       <td className="p-6">
-                        <span className="bg-red-500/10 text-red-400 border border-red-500/20 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">YouTube</span>
+                        <span className="bg-red-100 text-red-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">YouTube</span>
                       </td>
                       <td className="p-6">
-                        <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Movement</span>
+                        <span className="bg-teal-100 text-teal-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Movement</span>
                       </td>
                       <td className="p-6">
-                        <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Live</span>
+                        <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Live</span>
                       </td>
-                      <td className="p-6 text-right">Approved</td>
+                      <td className="p-6 text-right text-xs font-bold text-slate-400">Approved</td>
                     </tr>
-                    <tr className="hover:bg-slate-950/20">
-                      <td className="p-6 font-bold text-white">Name that tune — decades</td>
+                    <tr className="hover:bg-slate-50/50">
+                      <td className="p-6 font-bold text-slate-900">Name that tune — decades</td>
                       <td className="p-6">
-                        <span className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">TikTok</span>
+                        <span className="bg-slate-100 text-slate-600 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">TikTok</span>
                       </td>
                       <td className="p-6">
-                        <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Music</span>
+                        <span className="bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Music</span>
                       </td>
                       <td className="p-6">
-                        <span className="bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Live</span>
+                        <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2.5 py-1 rounded-md">Live</span>
                       </td>
-                      <td className="p-6 text-right">Approved</td>
+                      <td className="p-6 text-right text-xs font-bold text-slate-400">Approved</td>
                     </tr>
 
                     {/* Local Submissions */}
                     {submissions.map((sub) => (
-                      <tr key={sub.id} className="hover:bg-slate-950/20">
-                        <td className="p-6 font-bold text-white">{sub.title}</td>
+                      <tr key={sub.id} className="hover:bg-slate-50/50">
+                        <td className="p-6 font-bold text-slate-900">{sub.title}</td>
                         <td className="p-6">
-                          <span className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md capitalize">{sub.platform}</span>
+                          <span className="bg-slate-100 text-slate-600 text-[10px] font-black uppercase px-2.5 py-1 rounded-md capitalize">{sub.platform}</span>
                         </td>
                         <td className="p-6">
-                          <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 text-[10px] font-black uppercase px-2.5 py-1 rounded-md capitalize">{sub.category}</span>
+                          <span className="bg-teal-100 text-teal-700 text-[10px] font-black uppercase px-2.5 py-1 rounded-md capitalize">{sub.category}</span>
                         </td>
                         <td className="p-6">
                           <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-md ${
                             sub.status === 'live'
-                              ? 'bg-emerald-500/10 text-emerald-400'
+                              ? 'bg-emerald-100 text-emerald-800'
                               : sub.status === 'pending'
-                              ? 'bg-amber-500/10 text-amber-400'
-                              : 'bg-slate-850 text-slate-400'
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-slate-100 text-slate-500'
                           }`}>
                             {sub.status}
                           </span>
@@ -213,14 +215,14 @@ export default function AdminDashboard() {
                           {sub.status === 'pending' && (
                             <button
                               onClick={() => handleApprove(sub.id)}
-                              className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                              className="bg-emerald-600 hover:bg-emerald-550 text-white text-xs font-black px-3 py-1.5 rounded-lg transition-colors shadow-sm"
                             >
                               Approve
                             </button>
                           )}
                           <button
                             onClick={() => handleReject(sub.id)}
-                            className="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                            className="bg-rose-600 hover:bg-rose-550 text-white text-xs font-black px-3 py-1.5 rounded-lg transition-colors"
                           >
                             Reject
                           </button>

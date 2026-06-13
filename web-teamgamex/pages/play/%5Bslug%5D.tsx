@@ -35,9 +35,9 @@ export default function PlayGamePage() {
   if (!game) {
     return (
       <Layout>
-        <div className="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center">
+        <div className="bg-[#faf6f0] text-slate-800 min-h-screen flex flex-col items-center justify-center">
           <p className="text-xl font-bold mb-4">Activity not found.</p>
-          <Link href="/" className="text-blue-500 hover:underline">Back to directory</Link>
+          <Link href="/" className="text-indigo-650 hover:underline font-bold">Back to directory</Link>
         </div>
       </Layout>
     )
@@ -61,31 +61,24 @@ export default function PlayGamePage() {
         <meta name="description" content={game.description} />
       </Head>
 
-      <div className="bg-slate-900 text-white min-h-screen font-sans">
+      <div className="bg-[#faf6f0] text-slate-800 min-h-screen font-sans">
         {/* Navigation Bar */}
-        <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between border-b border-slate-800">
-          <Link href="/" className="text-2xl font-black tracking-tight text-white flex items-center gap-1">
-            Team<span className="text-blue-500">Game</span>X.
+        <nav className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row gap-4 items-center justify-between border-b-2 border-[#f0e8dc] mb-12">
+          <Link href="/" className="text-3xl font-black tracking-tight text-indigo-950 flex items-center gap-2 hover:scale-105 transition-transform">
+            <span className="bg-gradient-to-tr from-amber-400 to-rose-450 text-white w-10 h-10 rounded-2xl flex items-center justify-center shadow-md shadow-amber-500/30">🎯</span>
+            TeamGameX
           </Link>
-          <div className="flex items-center gap-8 text-sm font-bold text-slate-300">
-            <Link href="/" className="hover:text-white transition-colors">Directory</Link>
-            <Link href="/disclaimer" className="hover:text-white transition-colors">About</Link>
-            <Link href="/submit" className="hover:text-white transition-colors">Submit a game</Link>
-            <a
-              href={game.gearUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl transition-colors"
-            >
-              Get the gear
-            </a>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-bold text-slate-600">
+            <Link href="/" className="hover:text-indigo-650 transition-colors">🎈 Game Directory</Link>
+            <Link href="/disclaimer" className="hover:text-indigo-650 transition-colors">💬 About Us</Link>
+            <Link href="/submit" className="hover:text-indigo-650 transition-colors">➕ Submit a Game</Link>
           </div>
         </nav>
 
         {/* Detail Body */}
-        <main className="max-w-6xl mx-auto px-6 py-12">
+        <main className="max-w-6xl mx-auto px-6 pb-24">
           {/* Back button */}
-          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-black text-slate-500 hover:text-indigo-650 mb-8 transition-colors">
             <span>←</span> Back to directory
           </Link>
 
@@ -93,7 +86,7 @@ export default function PlayGamePage() {
             {/* Left: Video & Info */}
             <div className="lg:col-span-2 space-y-8">
               {/* Video Player */}
-              <div className="bg-black aspect-video rounded-3xl overflow-hidden border border-slate-800 shadow-2xl relative">
+              <div className="bg-slate-900 aspect-video rounded-[2rem] overflow-hidden border-2 border-[#e6dec8] shadow-xl relative">
                 {game.videoUrl.includes('youtube') || game.videoUrl.includes('youtu.be') ? (
                   <iframe
                     className="w-full h-full"
@@ -112,45 +105,45 @@ export default function PlayGamePage() {
 
               {/* Title & Tags */}
               <div className="space-y-4">
-                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white leading-tight">
+                <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight">
                   {game.title}
                 </h1>
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full">
+                  <span className="bg-rose-100 border border-rose-200 text-rose-700 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl">
                     {game.category}
                   </span>
-                  <span className="bg-slate-800 border border-slate-700 text-slate-300 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full">
-                    {game.mobility} mobility friendly
+                  <span className="bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl">
+                    🪑 {game.mobility} mobility friendly
                   </span>
-                  <span className="bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full">
-                    {game.gearCost} cost
+                  <span className="bg-amber-100 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-xl">
+                    💰 {game.gearCost} cost
                   </span>
                 </div>
               </div>
 
               {/* Description */}
-              <div className="bg-slate-950/40 border border-slate-800 rounded-3xl p-8 space-y-4">
-                <h2 className="text-lg font-bold text-slate-300 uppercase tracking-widest text-[10px]">Description</h2>
-                <p className="text-slate-300 text-lg leading-relaxed">{game.description}</p>
+              <div className="bg-white border-2 border-[#e6dec8] rounded-[2rem] p-8 space-y-4 shadow-sm">
+                <h2 className="text-xs font-black uppercase tracking-widest text-slate-400">Game Description & Instructions</h2>
+                <p className="text-slate-700 text-lg leading-relaxed">{game.description}</p>
               </div>
 
               {/* Structured Metadata Panel */}
-              <div className="bg-slate-950/60 border border-slate-850 rounded-3xl p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Players</span>
-                  <span className="text-2xl font-black text-white">{game.playersMin}–{game.playersMax}</span>
+              <div className="bg-white border-2 border-[#e6dec8] rounded-[2rem] p-8 grid grid-cols-2 md:grid-cols-4 gap-6 shadow-sm">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">👥 Players</span>
+                  <span className="text-2xl font-black text-indigo-950">{game.playersMin}–{game.playersMax}</span>
                 </div>
-                <div className="space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Duration</span>
-                  <span className="text-2xl font-black text-white">{game.durationMin} min</span>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">⏱️ Duration</span>
+                  <span className="text-2xl font-black text-indigo-950">{game.durationMin} min</span>
                 </div>
-                <div className="space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Mobility</span>
-                  <span className="text-2xl font-black text-white capitalize">{game.mobility === 'all' ? 'All levels' : game.mobility}</span>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">🪑 Mobility</span>
+                  <span className="text-2xl font-black text-indigo-950 capitalize">{game.mobility === 'all' ? 'All levels' : game.mobility}</span>
                 </div>
-                <div className="space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Gear Cost</span>
-                  <span className="text-2xl font-black text-white">{game.gearCost}</span>
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">💰 Gear cost</span>
+                  <span className="text-2xl font-black text-indigo-950">{game.gearCost}</span>
                 </div>
               </div>
 
@@ -160,21 +153,21 @@ export default function PlayGamePage() {
                   href={game.gearUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:flex-1 bg-blue-650 hover:bg-blue-600 text-white font-bold py-4 rounded-xl text-center transition-colors border border-blue-600 shadow-lg shadow-blue-950/40"
+                  className="w-full sm:flex-1 bg-amber-450 hover:bg-amber-400 text-slate-900 font-black py-4 rounded-xl text-center transition-colors shadow-md shadow-amber-500/10 text-base"
                 >
-                  🛒 Get the gear — Amazon
+                  🛍️ Get the gear — Amazon
                 </a>
                 <a
                   href={game.videoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 rounded-xl text-center transition-colors border border-slate-700"
+                  className="w-full sm:flex-1 bg-white hover:bg-slate-50 text-slate-800 font-black py-4 rounded-xl text-center transition-colors border-2 border-[#e6dec8]"
                 >
-                  🔗 Watch original
+                  📺 Watch original video
                 </a>
                 <button
                   onClick={handleShare}
-                  className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-bold px-8 py-4 rounded-xl transition-colors border border-slate-700 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-850 font-black px-8 py-4 rounded-xl transition-colors border-2 border-[#e6dec8] flex items-center justify-center gap-2"
                 >
                   <span>📢</span> {copied ? 'Copied Link!' : 'Share'}
                 </button>
@@ -183,15 +176,15 @@ export default function PlayGamePage() {
 
             {/* Right: Up Next Sidebar */}
             <div className="space-y-6">
-              <h3 className="text-xs font-black uppercase tracking-widest text-slate-500">Up next</h3>
+              <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Related Activities</h3>
               <div className="space-y-4">
                 {upNext.map((next) => (
                   <Link
                     key={next.id}
                     href={`/play/${next.slug}`}
-                    className="flex gap-4 p-4 bg-slate-950/40 border border-slate-850 hover:border-slate-750 rounded-2xl transition-all group"
+                    className="flex gap-4 p-4 bg-white border-2 border-[#e6dec8] hover:border-indigo-400 rounded-2xl transition-all group"
                   >
-                    <div className="w-24 h-16 bg-slate-900 border border-slate-800 rounded-lg overflow-hidden flex items-center justify-center text-xl shrink-0">
+                    <div className="w-20 h-16 bg-amber-50 border-2 border-[#e6dec8] rounded-xl overflow-hidden flex items-center justify-center text-3xl shrink-0 group-hover:bg-amber-100 transition-colors">
                       {next.category === 'movement' && '🏃'}
                       {next.category === 'music' && '🎵'}
                       {next.category === 'memory' && '🧠'}
@@ -200,10 +193,10 @@ export default function PlayGamePage() {
                       {next.category === 'trivia' && '💡'}
                     </div>
                     <div className="space-y-1">
-                      <h4 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
+                      <h4 className="text-sm font-black text-slate-900 group-hover:text-indigo-650 transition-colors line-clamp-2">
                         {next.title}
                       </h4>
-                      <p className="text-[10px] text-slate-500 font-bold capitalize">{next.category} · {next.durationMin} min</p>
+                      <p className="text-[10px] text-slate-400 font-bold capitalize">{next.category} · {next.durationMin} min</p>
                     </div>
                   </Link>
                 ))}
