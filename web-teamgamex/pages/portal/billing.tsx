@@ -68,7 +68,7 @@ export default function BillingPage() {
             </ul>
           </div>
           <button 
-            onClick={() => handleUpgrade('price_YOUR_STRIPE_PRICE_ID')} // Replace with real ID
+            onClick={() => handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || '')} 
             disabled={loading}
             className="mt-12 w-full py-5 bg-blue-600 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl disabled:opacity-50"
           >

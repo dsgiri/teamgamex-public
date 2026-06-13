@@ -111,3 +111,40 @@ To migrate old field schemas inside Sanity:
 ```bash
 node migrate-fields.js
 ```
+
+---
+
+## 🎨 Sanity CMS & Studio Details
+
+The TeamGameX backend content is powered by Sanity Content Lake, enabling a native, real-time visual authoring experience.
+
+### Key Sanity Files & Folders (`web-teamgamex/`)
+| File/Folder | Description |
+|---|---|
+| `sanity.config.ts` | Config file for Sanity Studio. |
+| `sanity.cli.ts` | Config file for Sanity CLI. |
+| `schemas/` | Location where Sanity Studio loads its content types. |
+| `plugins/` | Place for advanced Sanity Studio customizations and plugins. |
+| `lib/sanity.api.ts` & `lib/sanity.image.ts` | Configurations for the Sanity client & image assets. |
+| `components/PreviewProvider.tsx` | Configuration provider for the live Preview Mode. |
+| `pages/api/preview-mode/enable.ts` | Serverless API route to trigger Draft/Preview Mode. |
+| `pages/api/revalidate.ts` | Serverless API route for triggering Incremental Static Revalidation (ISR). |
+
+---
+
+## ☁️ Vercel Deployment & Environment Integration
+
+To link this codebase directly to your Vercel deployment:
+
+1. Link the local repository to Vercel:
+   ```bash
+   npx vercel link
+   ```
+2. Pull environment variables from your Vercel dashboard:
+   ```bash
+   npx vercel env pull
+   ```
+3. Deploy to production manually via CLI:
+   ```bash
+   npx vercel --prod
+   ```

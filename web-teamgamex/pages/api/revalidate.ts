@@ -118,7 +118,7 @@ async function readBody(readable: NextApiRequest): Promise<string> {
   return Buffer.concat(chunks).toString('utf8')
 }
 
-type StaleRoute = '/' | `/posts/${string}`
+type StaleRoute = '/' | `/posts/${string}` | `/play/${string}`
 
 async function queryStaleRoutes(
   body: Pick<
@@ -155,12 +155,26 @@ async function queryStaleRoutes(
     case 'author':
       return await queryStaleAuthorRoutes(client, body._id)
     case 'post':
+    case 'article':
       return await queryStalePostRoutes(client, body._id)
+    case 'videoPost':
+      return await queryStaleVideoPostRoutes(client, body._id)
     case 'settings':
       return await queryAllRoutes(client)
     default:
       throw new TypeError(`Unknown type: ${body._type}`)
   }
+}
+
+async function queryStaleVideoPostRoutes(
+  client: SanityClient,
+  id: string,
+): Promise<StaleRoute[]> {
+  const slugs = await client.fetch(
+    groq`*[_type == "videoPost" && _id == $id].postId.current`,
+    { id },
+  )
+  return ['/', ...slugs.map((slug) => `/play/${slug}` as StaleRoute)]
 }
 
 async function _queryAllRoutes(client: SanityClient): Promise<string[]> {

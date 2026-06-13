@@ -15,6 +15,7 @@ import {
   postSlugsQuery,
   type Settings,
   settingsQuery,
+  postsByIdsQuery,
 } from './sanity.queries'
 
 export function getClient(preview?: { token: string }): SanityClient {
@@ -41,7 +42,7 @@ export async function getAllPostsSlugs(): Promise<any[]> {
 export async function getPostAndMoreStories(
   slug: string | string[],
   token?: string | null
-): Promise<{ post: Post; morePosts: Post[] }> {
+ ): Promise<{ post: Post; morePosts: Post[] }> {
   // Re-join the array into a single string path for the database query
   const slugString = Array.isArray(slug) ? slug.join('/') : slug
   
@@ -50,4 +51,8 @@ export async function getPostAndMoreStories(
     postAndMoreStoriesQuery,
     { postId: slugString } 
   )
+}
+
+export async function getPostsByIds(ids: string[]): Promise<Post[]> {
+  return await getClient().fetch(postsByIdsQuery, { ids })
 }

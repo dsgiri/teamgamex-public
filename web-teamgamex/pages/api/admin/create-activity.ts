@@ -41,17 +41,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // 4. Sanity Document Creation
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Math.floor(1000 + Math.random() * 9000);
+    const categoryMap: Record<string, string> = {
+      physical: 'senior-leaving',
+      mental: 'team-building',
+      social: 'icebreakers'
+    };
+
     const result = await writeClient.create({
-      _type: 'post',
+      _type: 'videoPost',
+      postId: {
+        _type: 'slug',
+        current: slug
+      },
       title,
       description: description || '',
-      youtubeUrl,
-      // vibe refers to the document ID of the specific category in your Sanity studio
-      vibe: { 
-        _type: 'reference', 
-        _ref: vibe 
-      }, 
-      publishedAt: new Date().toISOString(),
+      videoUrl: youtubeUrl,
+      postSource: 'youtube', // Default source from admin panel input
+      playerBenefit: description || 'Boosts cognitive function and social engagement.',
+      shopLink: 'https://www.amazon.com',
+      category: categoryMap[vibe] || 'senior-leaving'
     })
 
     // 5. Success Signal

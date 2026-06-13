@@ -40,8 +40,8 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
   )
 
   const [settings, { post, morePosts }] = await Promise.all([
-    getSettings(client),
-    getPostAndMoreStories(client, params.slug),
+    getSettings(),
+    getPostAndMoreStories(params.slug, previewMode ? readToken : null),
   ])
 
   if (!post) {

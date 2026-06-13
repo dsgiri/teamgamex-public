@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { getAllPosts } from 'lib/sanity.client'
+import { getPostsByIds } from 'lib/sanity.client'
 import { Post } from 'lib/sanity.queries'
 import Container from 'components/BlogContainer'
 import Layout from 'components/BlogLayout'
@@ -42,8 +42,13 @@ export default function MyFeed() {
       }
 
       const savedIds = savedEntries.map(entry => entry.post_id)
-      const allPosts = await getAllPosts()
-      const filtered = allPosts.filter(post => savedIds.includes(post._id))
+      if (savedIds.length === 0) {
+        setSavedPosts([])
+        setLoading(false)
+        return
+      }
+
+      const filtered = await getPostsByIds(savedIds)
 
       setSavedPosts(filtered)
       setLoading(false)

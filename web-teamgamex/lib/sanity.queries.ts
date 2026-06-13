@@ -45,6 +45,12 @@ export const postSlugsQuery = groq`
 
 export const settingsQuery = groq`*[_type == "settings"][0]`
 
+export const postsByIdsQuery = groq`
+*[_type == "videoPost" && _id in $ids] {
+  ${postFields}
+}
+`
+
 // 5. TypeScript Interfaces: These act as the blueprint for your data
 export interface Post {
   _id: string
