@@ -43,6 +43,36 @@ We have successfully synchronized and added the following enterprise-grade capab
 
 ---
 
+## 🔒 Security & Authorization Zones
+
+The TeamGameX platform enforces a multi-tiered security model mapped via Clerk middleware and Supabase role controls:
+
+### 1. Public Zone (Unauthenticated)
+* **Access Level:** Open to all public web traffic. No login required.
+* **Scope/Routes:** 
+  * Home Directory (`/`), Games Browser (`/browse-games`), dynamic dynamic video player details (`/play/*`)
+  * Blog Journal articles (`/blog/*`, `/posts/*`) and Help Center (`/help/*`)
+  * Info routes (`/partners`, `/pricing`, `/login`, `/join`, `/disclaimer`, `/privacy`, `/terms`)
+  * Public APIs & webhooks (`/api/join`, `/api/webhooks/*`)
+* **Purpose:** Public landing, pricing visibility, search discovery, and detail player page viewing.
+
+### 2. Partner Zone (Facility Coordinator Portal)
+* **Access Level:** Restrictive. Requires basic Clerk user authentication (`userId` exists).
+* **Scope/Routes:**
+  * Member Portal Dashboard (`/portal/*`)
+  * Booking Calendar (`/calendar`), saved activities feed (`/my-feed`)
+  * Authenticated checkout pipelines (`/api/checkout/*`)
+* **Purpose:** Gated workspace for active senior care coordinators, activity directors, and B2B managers to schedule activities, log compliance logs, and manage subscription billing.
+
+### 3. Admin Zone (Master Console)
+* **Access Level:** Highly Restrictive. Requires active Clerk user session AND verification from the database that the user's role belongs to the `'internal'` zone (`user_roles` joined with `role_master`).
+* **Scope/Routes:**
+  * Admin Console Layout (`/admin/*`)
+  * Private activity insertion routes (`/api/admin/*`)
+* **Purpose:** Intended for administrative staff to approve/reject crowdsourced games, manage schema tags, audit metrics, and inject manual videos.
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Environment Configuration
