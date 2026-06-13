@@ -38,6 +38,7 @@
     "next-sanity-image": "6.2.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "resend": "^6.12.4",
     "sanity": "^4.22.0",
     "sanity-plugin-asset-source-unsplash": "4.0.1",
     "sanity-plugin-iframe-pane": "4.0.0",
