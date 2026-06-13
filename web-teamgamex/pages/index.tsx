@@ -228,27 +228,57 @@ export default function IndexPage({ posts = [] }: IndexPageProps) {
                   className="group bg-white border-2 border-[#e6dec8] hover:border-indigo-400 rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-indigo-950/5 flex flex-col justify-between"
                 >
                   <div>
-                    {/* Media Placeholder */}
-                    <div className="relative aspect-video bg-amber-50 border-2 border-[#e6dec8] rounded-[1.5rem] overflow-hidden mb-6 flex items-center justify-center group-hover:bg-amber-100/50 transition-colors">
+                    {/* Media Preview (Video Thumbnail or Fallback) */}
+                    <div className="relative aspect-video bg-slate-950 border-2 border-[#e6dec8] rounded-[1.5rem] overflow-hidden mb-6 flex items-center justify-center transition-colors">
+                      {game.platform === 'youtube' && game.embedId ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={`https://img.youtube.com/vi/${game.embedId}/hqdefault.jpg`}
+                            alt={game.title}
+                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                          {/* Dark overlay that fades out on hover */}
+                          <div className="absolute inset-0 bg-slate-900/40 group-hover:bg-slate-900/25 transition-colors duration-300" />
+                        </>
+                      ) : (
+                        /* Beautiful fallback gradient with category symbol */
+                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 flex items-center justify-center">
+                          <span className="text-4xl opacity-80 group-hover:scale-110 transition-transform duration-300">
+                            {game.category === 'movement' && '🏃'}
+                            {game.category === 'music' && '🎵'}
+                            {game.category === 'memory' && '🧠'}
+                            {game.category === 'creative' && '🎨'}
+                            {game.category === 'social' && '💬'}
+                            {game.category === 'trivia' && '💡'}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Glassmorphic Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur-md border border-white/40 text-white rounded-full flex items-center justify-center shadow-lg group-hover:bg-white group-hover:text-slate-950 group-hover:scale-110 transition-all duration-300">
+                          <svg
+                            className="w-5 h-5 fill-current ml-0.5"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+
                       {/* Platform Icon Overlay */}
-                      <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider text-slate-700 border-2 border-[#e6dec8]">
+                      <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider text-slate-700 border-2 border-[#e6dec8] z-20">
                         {game.platform === 'youtube' && '📺 YouTube'}
                         {game.platform === 'tiktok' && '🎵 TikTok'}
                         {game.platform === 'instagram' && '📸 Instagram'}
                         {game.platform === 'linkedin' && '💼 LinkedIn'}
                       </span>
-                      <span className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-black text-white">
+                      <span className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-black text-white z-20">
                         ⏱️ {game.durationMin} min
                       </span>
-                      {/* Interactive graphic/emoji display */}
-                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-4xl shadow-md border-2 border-[#e6dec8]">
-                        {game.category === 'movement' && '🏃'}
-                        {game.category === 'music' && '🎵'}
-                        {game.category === 'memory' && '🧠'}
-                        {game.category === 'creative' && '🎨'}
-                        {game.category === 'social' && '💬'}
-                        {game.category === 'trivia' && '💡'}
-                      </div>
                     </div>
 
                     <h3 className="text-2xl font-black text-slate-900 mb-3 group-hover:text-indigo-650 transition-colors leading-snug">

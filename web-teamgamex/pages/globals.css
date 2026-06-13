@@ -20,3 +20,78 @@
 }
 
 /* Add any custom utility hacks here if needed for the Event Calendar */
+
+/* ==========================================
+   ACCESSIBILITY OVERRIDES (DARK MODE)
+   ========================================== */
+html.theme-dark, html.theme-dark body {
+  background-color: #020617 !important; /* slate-950 */
+  color: #f1f5f9 !important; /* slate-100 */
+}
+
+html.theme-dark .bg-white,
+html.theme-dark nav.bg-white\/80,
+html.theme-dark footer.bg-white {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #f1f5f9 !important;
+}
+
+html.theme-dark .bg-\[\#faf6f0\] {
+  background-color: #020617 !important;
+}
+
+html.theme-dark .bg-slate-50,
+html.theme-dark .bg-slate-900\/50 {
+  background-color: #1e293b !important; /* slate-800 */
+}
+
+html.theme-dark .text-slate-800,
+html.theme-dark .text-slate-900,
+html.theme-dark .text-indigo-950,
+html.theme-dark .text-slate-600 {
+  color: #e2e8f0 !important;
+}
+
+html.theme-dark .border-\[\#e6dec8\],
+html.theme-dark .border-\[\#f0e8dc\],
+html.theme-dark .border-slate-100 {
+  border-color: #334155 !important; /* slate-700 */
+}
+
+html.theme-dark .bg-\[\#eaf7f4\] {
+  background-color: #115e59 !important;
+  color: #2dd4bf !important;
+}
+
+/* ==========================================
+   ACCESSIBILITY OVERRIDES (HIGH CONTRAST)
+   ========================================== */
+html.contrast-high, html.contrast-high body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.contrast-high * {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html.contrast-high a,
+html.contrast-high button,
+html.contrast-high select,
+html.contrast-high input,
+html.contrast-high textarea {
+  color: #ffff00 !important; /* High contrast yellow */
+  border: 2px solid #ffffff !important;
+  text-decoration: underline !important;
+  font-weight: 900 !important;
+}
+
+html.contrast-high a:hover,
+html.contrast-high button:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}

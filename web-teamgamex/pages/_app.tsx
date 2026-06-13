@@ -3,6 +3,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import './globals.css' // Direct local import for maximum stability
+import AccessibilityWidget from 'components/AccessibilityWidget'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <div className="antialiased">
         <Component {...pageProps} />
+        <AccessibilityWidget />
       </div>
     </ClerkProvider>
   )

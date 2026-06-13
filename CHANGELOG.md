@@ -10,6 +10,7 @@ All notable changes to the TeamGameX project will be documented in this file. Th
 * Created [`PROJECT-ABOUT.md`](file:///C:/Users/z00545fp/Documents/teamgamex-public/PROJECT-ABOUT.md) project brief.
 * Added Google AdSense verification meta tag to the custom Next.js Document (`web-teamgamex/pages/_document.tsx`).
 * Created `/partners` route displaying and recognizing the key technology partners powering the platform.
+* Created global `AccessibilityWidget` floating controller providing font size scaling, light/dark themes, and high-visibility contrast settings to accommodate senior users.
 
 ### Fixed
 * Fixed Netlify build failure due to missing `resend` dependency by adding it to `web-teamgamex/package.json` dependencies.
