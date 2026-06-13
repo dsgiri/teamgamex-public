@@ -147,8 +147,8 @@ export default function IndexPage({ posts = [] }: IndexPageProps) {
 
         {/* Hero Header */}
         <header className="max-w-4xl mx-auto px-6 pt-16 pb-12 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 bg-rose-100 border-2 border-rose-200 text-rose-700 text-xs font-black uppercase tracking-wider px-4 py-2 rounded-full">
-            <span>🎉</span> Let's Spark Laughter & Connection!
+          <div className="inline-flex items-center gap-1.5 bg-[#eaf7f4] border-2 border-[#cbebe3] text-[#1d9e75] text-xs font-bold px-4 py-2 rounded-full">
+            <span>💚</span> For senior & assisted living
           </div>
           <h1 className="text-4xl md:text-7xl font-black tracking-tight text-slate-900 leading-[1.1]">
             Team games that improve{' '}
@@ -156,8 +156,8 @@ export default function IndexPage({ posts = [] }: IndexPageProps) {
             <span className="underline decoration-wavy decoration-rose-400 decoration-3">engagement</span> &{' '}
             <span className="underline decoration-wavy decoration-emerald-400 decoration-3">joy</span>.
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 font-bold max-w-2xl mx-auto leading-relaxed">
-            Welcome, Care Staff & Families! Discover real, easy-to-run team games played in care homes worldwide. Pick a game, watch the video, grab the gear, and play today!
+          <p className="text-lg md:text-xl text-slate-600 font-bold max-w-3xl mx-auto leading-relaxed">
+            A curated video directory of real team games played in care homes and senior communities — with gear links so you can run them today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <a
