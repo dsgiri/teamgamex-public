@@ -2,14 +2,65 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from 'components/BlogLayout'
+import { getAllPosts } from 'lib/sanity.client'
+import { Post } from 'lib/sanity.queries'
 import { initialGames, GameActivity } from 'lib/mockData'
 
-export default function IndexPage() {
+interface IndexPageProps {
+  posts: Post[]
+}
+
+// Mapping utility to convert Sanity Post to GameActivity layout
+const mapSanityPostToGame = (post: Post): GameActivity => {
+  // Extract youtube ID or other platform IDs
+  const videoUrl = post.videoUrl || ''
+  let embedId = ''
+  let platform = (post.postSource || 'youtube') as any
+
+  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+    embedId = videoUrl.includes('shorts/') 
+      ? videoUrl.split('shorts/')[1]?.split('?')[0] 
+      : videoUrl.split('v=')[1]?.split('&')[0] || videoUrl.split('/').pop() || ''
+    platform = 'youtube'
+  } else if (videoUrl.includes('facebook.com')) {
+    platform = 'facebook'
+  } else if (videoUrl.includes('tiktok.com')) {
+    embedId = videoUrl.split('/video/')[1]?.split('?')[0] || ''
+    platform = 'tiktok'
+  }
+
+  // Fallback slug conversion
+  const slug = post.postId || post.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ''
+
+  return {
+    id: post._id,
+    title: post.title || 'Untitled Game',
+    description: post.description || post.playerBenefit || 'No description provided.',
+    videoUrl: videoUrl,
+    platform: platform,
+    embedId: embedId,
+    category: (post.category || 'movement') as any,
+    mobility: 'all', // Fallback defaults
+    playersMin: 4,
+    playersMax: 20,
+    durationMin: 20,
+    gearUrl: post.shopLink || 'https://www.amazon.com',
+    gearCost: post.shopLink ? 'Low cost' : 'Free',
+    status: 'live',
+    slug: slug
+  }
+}
+
+export default function IndexPage({ posts = [] }: IndexPageProps) {
   const [games, setGames] = useState<GameActivity[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all')
 
   useEffect(() => {
+    // Map Sanity posts
+    const sanityGames = posts.map(mapSanityPostToGame)
+
+    // Pull local submissions
     const localSaved = localStorage.getItem('teamgamex_submissions')
     let submissions: GameActivity[] = []
     if (localSaved) {
@@ -19,8 +70,15 @@ export default function IndexPage() {
         console.error(e)
       }
     }
-    setGames([...initialGames, ...submissions])
-  }, [])
+    
+    // Combine Sanity games, local submissions, and fallback initialGames if empty
+    const combined = [...sanityGames, ...submissions]
+    if (combined.length === 0) {
+      setGames(initialGames)
+    } else {
+      setGames(combined)
+    }
+  }, [posts])
 
   // Filter Logic
   const filteredGames = games.filter((game) => {
@@ -73,9 +131,9 @@ export default function IndexPage() {
             TeamGameX
           </Link>
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-bold text-slate-600">
-            <Link href="/" className="hover:text-indigo-600 transition-colors">🎈 Game Directory</Link>
-            <Link href="/disclaimer" className="hover:text-indigo-600 transition-colors">💬 About Us</Link>
-            <Link href="/submit" className="hover:text-indigo-600 transition-colors">➕ Submit a Game</Link>
+            <Link href="/" className="hover:text-indigo-650 transition-colors">🎈 Game Directory</Link>
+            <Link href="/disclaimer" className="hover:text-indigo-650 transition-colors">💬 About Us</Link>
+            <Link href="/submit" className="hover:text-indigo-650 transition-colors">➕ Submit a Game</Link>
             <a
               href="https://www.amazon.com"
               target="_blank"
@@ -234,4 +292,12 @@ export default function IndexPage() {
       </div>
     </Layout>
   )
+}
+
+export async function getStaticProps() {
+  const posts = await getAllPosts()
+  return {
+    props: { posts: posts || [] },
+    revalidate: 60
+  }
 }

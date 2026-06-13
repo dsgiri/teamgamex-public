@@ -1,38 +1,74 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Layout from 'components/BlogLayout'
 import VideoPlayer from 'components/VideoPlayer'
-import { initialGames, GameActivity } from 'lib/mockData'
+import {
+  getAllPostsSlugs,
+  getPostAndMoreStories,
+  getClient,
+} from 'lib/sanity.client'
+import { Post } from 'lib/sanity.queries'
+import { GetStaticProps, GetStaticPaths } from 'next'
 
-export default function PlayGamePage() {
+interface PlayGamePageProps {
+  post: Post
+  morePosts: Post[]
+  preview?: boolean
+}
+
+// Mapping utility to convert Sanity Post to GameActivity layout keys
+const mapSanityPostToGame = (post: Post) => {
+  const videoUrl = post.videoUrl || ''
+  let embedId = ''
+  let platform = (post.postSource || 'youtube') as any
+
+  if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+    embedId = videoUrl.includes('shorts/') 
+      ? videoUrl.split('shorts/')[1]?.split('?')[0] 
+      : videoUrl.split('v=')[1]?.split('&')[0] || videoUrl.split('/').pop() || ''
+    platform = 'youtube'
+  } else if (videoUrl.includes('facebook.com')) {
+    platform = 'facebook'
+  } else if (videoUrl.includes('tiktok.com')) {
+    embedId = videoUrl.split('/video/')[1]?.split('?')[0] || ''
+    platform = 'tiktok'
+  }
+
+  const slug = post.postId || post.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ''
+
+  return {
+    id: post._id,
+    title: post.title || 'Untitled Game',
+    description: post.description || post.playerBenefit || 'No description provided.',
+    videoUrl: videoUrl,
+    platform: platform,
+    embedId: embedId,
+    category: (post.category || 'movement') as any,
+    mobility: 'all',
+    playersMin: 4,
+    playersMax: 20,
+    durationMin: 20,
+    gearUrl: post.shopLink || 'https://www.amazon.com',
+    gearCost: post.shopLink ? 'Low cost' : 'Free',
+    slug: slug
+  }
+}
+
+export default function PlayGamePage({ post, morePosts = [] }: PlayGamePageProps) {
   const router = useRouter()
-  const { slug } = router.query
-  const [games, setGames] = useState<GameActivity[]>([])
-  const [game, setGame] = useState<GameActivity | null>(null)
   const [copied, setCopied] = useState(false)
 
-  useEffect(() => {
-    const localSaved = localStorage.getItem('teamgamex_submissions')
-    let submissions: GameActivity[] = []
-    if (localSaved) {
-      try {
-        submissions = JSON.parse(localSaved).filter((s: GameActivity) => s.status === 'live')
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    const allGames = [...initialGames, ...submissions]
-    setGames(allGames)
+  if (router.isFallback) {
+    return (
+      <div className="bg-[#faf6f0] text-slate-800 min-h-screen flex items-center justify-center">
+        <p className="text-xl font-bold">Loading game details...</p>
+      </div>
+    )
+  }
 
-    if (slug) {
-      const found = allGames.find((g) => g.slug === slug)
-      setGame(found || null)
-    }
-  }, [slug])
-
-  if (!game) {
+  if (!post) {
     return (
       <Layout>
         <div className="bg-[#faf6f0] text-slate-800 min-h-screen flex flex-col items-center justify-center">
@@ -43,8 +79,7 @@ export default function PlayGamePage() {
     )
   }
 
-  // Get up next/related videos (excluding the current one)
-  const upNext = games.filter((g) => g.id !== game.id).slice(0, 4)
+  const game = mapSanityPostToGame(post)
 
   const handleShare = () => {
     if (typeof window !== 'undefined') {
@@ -89,7 +124,7 @@ export default function PlayGamePage() {
               <div className="bg-slate-900 aspect-video rounded-[2rem] overflow-hidden border-2 border-[#e6dec8] shadow-xl relative">
                 {game.videoUrl.includes('youtube') || game.videoUrl.includes('youtu.be') ? (
                   <iframe
-                    className="w-full h-full"
+                    className="w-full h-full animate-fade-in"
                     src={`https://www.youtube.com/embed/${game.embedId}`}
                     title={game.title}
                     frameBorder="0"
@@ -178,28 +213,31 @@ export default function PlayGamePage() {
             <div className="space-y-6">
               <h3 className="text-xs font-black uppercase tracking-widest text-slate-400">Related Activities</h3>
               <div className="space-y-4">
-                {upNext.map((next) => (
-                  <Link
-                    key={next.id}
-                    href={`/play/${next.slug}`}
-                    className="flex gap-4 p-4 bg-white border-2 border-[#e6dec8] hover:border-indigo-400 rounded-2xl transition-all group"
-                  >
-                    <div className="w-20 h-16 bg-amber-50 border-2 border-[#e6dec8] rounded-xl overflow-hidden flex items-center justify-center text-3xl shrink-0 group-hover:bg-amber-100 transition-colors">
-                      {next.category === 'movement' && '🏃'}
-                      {next.category === 'music' && '🎵'}
-                      {next.category === 'memory' && '🧠'}
-                      {next.category === 'creative' && '🎨'}
-                      {next.category === 'social' && '💬'}
-                      {next.category === 'trivia' && '💡'}
-                    </div>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-black text-slate-900 group-hover:text-indigo-650 transition-colors line-clamp-2">
-                        {next.title}
-                      </h4>
-                      <p className="text-[10px] text-slate-400 font-bold capitalize">{next.category} · {next.durationMin} min</p>
-                    </div>
-                  </Link>
-                ))}
+                {morePosts.slice(0, 4).map((nextPost) => {
+                  const next = mapSanityPostToGame(nextPost)
+                  return (
+                    <Link
+                      key={next.id}
+                      href={`/play/${next.slug}`}
+                      className="flex gap-4 p-4 bg-white border-2 border-[#e6dec8] hover:border-indigo-400 rounded-2xl transition-all group"
+                    >
+                      <div className="w-20 h-16 bg-amber-50 border-2 border-[#e6dec8] rounded-xl overflow-hidden flex items-center justify-center text-3xl shrink-0 group-hover:bg-amber-100 transition-colors">
+                        {next.category === 'movement' && '🏃'}
+                        {next.category === 'music' && '🎵'}
+                        {next.category === 'memory' && '🧠'}
+                        {next.category === 'creative' && '🎨'}
+                        {next.category === 'social' && '💬'}
+                        {next.category === 'trivia' && '💡'}
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-black text-slate-900 group-hover:text-indigo-650 transition-colors line-clamp-2">
+                          {next.title}
+                        </h4>
+                        <p className="text-[10px] text-slate-400 font-bold capitalize">{next.category} · {next.durationMin} min</p>
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -207,4 +245,30 @@ export default function PlayGamePage() {
       </div>
     </Layout>
   )
+}
+
+export const getStaticProps: GetStaticProps<PlayGamePageProps> = async (ctx) => {
+  const { params = {} } = ctx
+  const slug = params.slug
+
+  const { post, morePosts } = await getPostAndMoreStories(slug)
+
+  return {
+    props: {
+      post: post || null,
+      morePosts: morePosts || [],
+    },
+    revalidate: 60,
+  }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = await getAllPostsSlugs()
+
+  return {
+    paths: slugs?.map(({ slug }) => ({
+      params: { slug }
+    })) || [],
+    fallback: 'blocking',
+  }
 }
